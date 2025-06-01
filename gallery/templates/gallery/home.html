@@ -10,7 +10,7 @@
             <a href="{% url 'gallery:home' %}" class="px-4 py-2 bg-instagram text-white rounded hover:bg-instagram-light {% if not tag_filter %}bg-instagram-light{% endif %}">
                 All Photos
             </a>
-            {% for tag in tags %}
+           
                 <a href="{% url 'gallery:home' %}?tag={{ tag.name }}" class="px-4 py-2 bg-instagram text-white rounded hover:bg-instagram-light {% if tag_filter == tag.name %}bg-instagram-light{% endif %}">
                     {{ tag.name }}
                 </a>

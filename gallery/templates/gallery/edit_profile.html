@@ -1,0 +1,62 @@
+{% extends 'base.html' %}
+{% load widget_tweaks %}
+
+{% block title %}Edit Profile{% endblock %}
+
+{% block content %}
+    <div class="max-w-2xl mx-auto bg-instagram-dark p-8 rounded-lg shadow-md text-white border border-gray-700">
+        <h2 class="text-2xl font-bold mb-6 text-center">Edit Profile</h2>
+        
+        <form method="post" enctype="multipart/form-data" class="space-y-4">
+            {% csrf_token %}
+            
+            <div>
+                <label for="id_username" class="block text-gray-300 mb-2">Username</label>
+                {{ user_form.username|add_class:"bg-gray-800 text-white border border-gray-600 rounded p-2 w-full" }}
+                {% if user_form.username.errors %}
+                    <p class="text-red-400 text-sm mt-1">{{ user_form.username.errors.0 }}</p>
+                {% endif %}
+            </div>
+            
+            <div>
+                <label for="id_email" class="block text-gray-300 mb-2">Email</label>
+                {{ user_form.email|add_class:"bg-gray-800 text-white border border-gray-600 rounded p-2 w-full" }}
+                {% if user_form.email.errors %}
+                    <p class="text-red-400 text-sm mt-1">{{ user_form.email.errors.0 }}</p>
+                {% endif %}
+            </div>
+            
+            <div>
+                <label for="id_bio" class="block text-gray-300 mb-2">Bio</label>
+                {{ profile_form.bio|add_class:"bg-gray-800 text-white border border-gray-600 rounded p-2 w-full" }}
+                {% if profile_form.bio.errors %}
+                    <p class="text-red-400 text-sm mt-1">{{ profile_form.bio.errors.0 }}</p>
+                {% endif %}
+            </div>
+            
+            <div>
+                <label for="id_profile_picture" class="block text-gray-300 mb-2">Profile Picture</label>
+                {{ profile_form.profile_picture|add_class:"bg-gray-800 text-white border border-gray-600 rounded p-2 w-full" }}
+                {% if profile_form.profile_picture.errors %}
+                    <p class="text-red-400 text-sm mt-1">{{ profile_form.profile_picture.errors.0 }}</p>
+                {% endif %}
+                
+                {% if user_profile.profile_picture %}
+                    <div class="mt-2">
+                        <p class="text-sm text-gray-400">Current:</p>
+                        <img src="{{ user_profile.profile_picture.url }}" alt="Current profile picture" class="w-20 h-20 rounded-full object-cover mt-1 border border-gray-600">
+                    </div>
+                {% endif %}
+            </div>
+            
+            <div class="flex justify-between">
+                <button type="submit" class="px-4 py-2 bg-instagram text-white rounded hover:bg-instagram-light">
+                    Save Changes
+                </button>
+                <a href="{% url 'gallery:profile' user.pk %}" class="px-4 py-2 bg-gray-700 text-white rounded hover:bg-gray-600">
+                    Cancel
+                </a>
+            </div>
+        </form>
+    </div>
+{% endblock %}

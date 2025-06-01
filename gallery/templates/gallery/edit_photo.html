@@ -1,0 +1,67 @@
+{% extends 'base.html' %}
+{% load widget_tweaks %}
+
+{% block title %}Edit {{ photo.title }}{% endblock %}
+
+{% block content %}
+    <div class="max-w-2xl mx-auto bg-instagram-dark p-8 rounded-lg shadow-md text-white border border-gray-700">
+        <h2 class="text-2xl font-bold mb-6 text-center">Edit Photo</h2>
+        
+        <form method="post" enctype="multipart/form-data" class="space-y-4">
+            {% csrf_token %}
+            
+            <div>
+                <label for="id_title" class="block text-gray-300 mb-2">Title</label>
+                {{ form.title|add_class:"bg-gray-800 text-white border border-gray-600 rounded p-2 w-full" }}
+                {% if form.title.errors %}
+                    <p class="text-red-400 text-sm mt-1">{{ form.title.errors.0 }}</p>
+                {% endif %}
+            </div>
+            
+            <div>
+                <label for="id_description" class="block text-gray-300 mb-2">Description</label>
+                {{ form.description|add_class:"bg-gray-800 text-white border border-gray-600 rounded p-2 w-full" }}
+                {% if form.description.errors %}
+                    <p class="text-red-400 text-sm mt-1">{{ form.description.errors.0 }}</p>
+                {% endif %}
+            </div>
+            
+            <div>
+                <label for="id_image" class="block text-gray-300 mb-2">Image</label>
+                {{ form.image|add_class:"bg-gray-800 text-white border border-gray-600 rounded p-2 w-full" }}
+                {% if form.image.errors %}
+                    <p class="text-red-400 text-sm mt-1">{{ form.image.errors.0 }}</p>
+                {% endif %}
+                
+                <div class="mt-2">
+                    <p class="text-sm text-gray-400">Current:</p>
+                    <img src="{{ photo.image.url }}" alt="Current photo" class="w-32 h-32 object-contain mt-1 border border-gray-600">
+                </div>
+            </div>
+            
+            <div>
+                <label class="block text-gray-300 mb-2">Tags</label>
+                <div class="grid grid-cols-2 md:grid-cols-3 gap-2">
+                    {% for tag in form.tags %}
+                        <div class="flex items-center">
+                            {{ tag.tag }}
+                            <label for="{{ tag.id_for_label }}" class="ml-2 text-gray-300">{{ tag.choice_label }}</label>
+                        </div>
+                    {% endfor %}
+                </div>
+                {% if form.tags.errors %}
+                    <p class="text-red-400 text-sm mt-1">{{ form.tags.errors.0 }}</p>
+                {% endif %}
+            </div>
+            
+            <div class="flex justify-between">
+                <button type="submit" class="px-4 py-2 bg-instagram text-white rounded hover:bg-instagram-light">
+                    Save Changes
+                </button>
+                <a href="{% url 'gallery:photo_detail' photo.pk %}" class="px-4 py-2 bg-gray-700 text-white rounded hover:bg-gray-600">
+                    Cancel
+                </a>
+            </div>
+        </form>
+    </div>
+{% endblock %}

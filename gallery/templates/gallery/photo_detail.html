@@ -1,0 +1,60 @@
+{% extends 'base.html' %}
+
+{% block title %}{{ photo.title }}{% endblock %}
+
+{% block content %}
+    <div class="max-w-4xl mx-auto bg-instagram-dark rounded-lg shadow-md overflow-hidden border border-gray-700">
+        <img src="{{ photo.image.url }}" alt="{{ photo.title }}" class="w-full max-h-96 object-contain bg-black">
+        
+        <div class="p-6 text-white">
+            <div class="flex justify-between items-start mb-4">
+                <div>
+                    <h1 class="text-2xl font-bold mb-2">{{ photo.title }}</h1>
+                    <p class="text-gray-300 mb-2">By 
+                        <a href="{% url 'gallery:profile' photo.user.pk %}" class="text-instagram hover:underline">
+                            {{ photo.user.username }}
+                        </a>
+                    </p>
+                    <p class="text-gray-400 text-sm">{{ photo.created_at|date:"F d, Y" }}</p>
+                </div>
+                
+                <div class="flex items-center">
+                    <form action="{% url 'gallery:like_photo' photo.pk %}" method="post">
+                        {% csrf_token %}
+                        <button type="submit" class="flex items-center space-x-1 text-gray-300 hover:text-instagram">
+                            <span class="text-lg">
+                                {% if user in photo.likes.all %}❤️{% else %}🤍{% endif %}
+                            </span>
+                            <span>{{ photo.total_likes }}</span>
+                        </button>
+                    </form>
+                </div>
+            </div>
+            
+            {% if photo.description %}
+                <div class="mb-6 text-gray-300">
+                    <p>{{ photo.description }}</p>
+                </div>
+            {% endif %}
+            
+            <div class="flex flex-wrap gap-2 mb-6">
+                {% for tag in photo.tags.all %}
+                    <a href="{% url 'gallery:home' %}?tag={{ tag.name }}" class="px-3 py-1 bg-gray-700 text-gray-300 rounded-full text-sm hover:bg-gray-600">
+                        {{ tag.name }}
+                    </a>
+                {% endfor %}
+            </div>
+            
+            {% if user == photo.user %}
+                <div class="flex space-x-4">
+                    <a href="{% url 'gallery:edit_photo' photo.pk %}" class="px-4 py-2 bg-instagram text-white rounded hover:bg-instagram-light">
+                        Edit
+                    </a>
+                    <a href="{% url 'gallery:delete_photo' photo.pk %}" class="px-4 py-2 bg-red-600 text-white rounded hover:bg-red-700">
+                        Delete
+                    </a>
+                </div>
+            {% endif %}
+        </div>
+    </div>
+{% endblock %}

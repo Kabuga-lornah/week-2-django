@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Photo Gallery - {% block title %}{% endblock %}</title>
+   <script src="https://cdn.tailwindcss.com"></script>
+ <style>
+.bg-instagram {
+    background-color: #f72525; 
+}
+
+.bg-instagram-dark {
+    background-color: #1a1a1a; 
+}
+
+.bg-instagram-light {
+    background-color: #262626; 
+}
+
+.text-instagram {
+    color: #f72525;
+}
+
+.hover\:bg-instagram-dark:hover {
+    background-color: #1a1a1a;
+}
+
+.hover\:bg-instagram-light:hover {
+    background-color: #333333;
+}
+
+.border-instagram {
+    border-color: #f72525;
+}
+
+.ring-instagram {
+    --tw-ring-color: #f72525;
+}
+</style>
+</head>
+<body class="bg-black text-white font-sans leading-normal tracking-normal">
+
+    <nav class="bg-[#0d0d0d] border-b border-gray-800 shadow-md shadow-gray-900/50">
+    <div class="max-w-6xl mx-auto px-4">
+        <div class="flex justify-between items-center py-4">
+            <!-- Branding -->
+            <div class="flex items-center space-x-2">
+                <div class="w-2 h-2 rounded-full bg-red-600 animate-pulse"></div>
+                <a href="{% url 'gallery:home' %}" class="text-white text-xl font-bold tracking-wide hover:text-red-500 transition duration-300">
+                    PixelPulse
+                </a>
+            </div>
+
+            <!-- Search Form -->
+            <div class="hidden md:flex items-center space-x-3">
+                <form method="get" action="{% url 'gallery:home' %}" class="flex">
+                    <input type="text" name="search" placeholder="Search..."
+                        class="px-4 py-2 rounded-l-lg border border-gray-600 bg-black text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-red-600" />
+                    <button type="submit" class="bg-red-600 text-white px-4 py-2 rounded-r-lg hover:bg-red-700 transition duration-300">
+                        Search
+                    </button>
+                </form>
+            </div>
+
+            <!-- Nav Links -->
+            <div class="hidden md:flex items-center space-x-4">
+                {% if user.is_authenticated %}
+                    <a href="{% url 'gallery:profile' user.pk %}" class="text-white font-medium hover:text-red-500 transition">Profile</a>
+                    <a href="{% url 'gallery:upload_photo' %}" class="text-white font-medium hover:text-red-500 transition">Upload</a>
+                    <a href="{% url 'gallery:logout' %}" class="text-white font-medium hover:text-red-500 transition">Logout</a>
+                {% else %}
+                    <a href="{% url 'gallery:login' %}" class="text-white font-medium hover:text-red-500 transition">Login</a>
+                    <a href="{% url 'gallery:register' %}" class="text-white font-medium hover:text-red-500 transition">Register</a>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+</nav>
+
+
+    <div class="container mx-auto px-4 py-8">
+        {% if messages %}
+            <div class="mb-4">
+                {% for message in messages %}
+                    <div class="px-4 py-3 rounded relative {% if message.tags == 'error' %}bg-red-100 border border-red-400 text-red-700{% else %}bg-green-100 border border-green-400 text-green-700{% endif %}" role="alert">
+                        <span class="block sm:inline">{{ message }}</span>
+                    </div>
+                {% endfor %}
+            </div>
+        {% endif %}
+        
+        {% block content %}
+        {% endblock %}
+    </div>
+</body>
+</html>

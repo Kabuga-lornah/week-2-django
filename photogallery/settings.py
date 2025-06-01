@@ -16,6 +16,7 @@ import cloudinary
 import cloudinary.uploader
 import cloudinary.api
 from dotenv import load_dotenv
+import dj_database_url
 
 load_dotenv()
 
@@ -86,8 +87,8 @@ WSGI_APPLICATION = 'photogallery.wsgi.application'
 #     }
 # }
 
-DATABASE = {
-    'default' : os.getenv('EXTERNAL_LINK')
+DATABASES = {
+    'default': dj_database_url.parse(os.getenv('EXTERNAL_LINK'))
 }
 
 
